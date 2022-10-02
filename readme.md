@@ -11,5 +11,6 @@ python -m flask run
 
 To run the express server go to the solarFlare directory and run the following command
 ```
-npm install npm run dev
+npm install 
+npm run dev
 ```
