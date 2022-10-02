@@ -1,4 +1,4 @@
-#API
+1. API
 
 To run the api locally, clone the repo, move inside the api directory and run the following:
 
