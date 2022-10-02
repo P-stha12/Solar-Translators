@@ -2,14 +2,9 @@ let option = document.querySelector("#option");
 let file = document.getElementsByName("csvInput")[0];
 let submit = document.querySelector("#Submit");
 let result = document.querySelector("#result");
+let hours= document.querySelector('#hours');
 
-let optionMap = new Map(
-  Object.entries(
-    { 1: "Partical Velocity" },
-    { 2: "Magnetic Field" },
-    { 3: "Both of them" }
-  )
-);
+let optionMap = { 1: 1 , 2:2};
 let formData = new FormData();
 submit.addEventListener("click",async (event) => {
   if (option.value == 0) {
@@ -29,6 +24,15 @@ submit.addEventListener("click",async (event) => {
           result.style.color = "black";
         }, 2000);
     }else{
+      if(!hours.value){
+        result.innerHTML("Please enter a valid value");
+        result.style.color = "red";
+        setTimeout(() => {
+          result.innerHTML("Result");
+          result.style.color = "black";
+        }, 2000);
+      }else{
+        formData.append('hours',hours.value);
         formData.append('file',file.files[0])
         result.innerHTML = "Loading ... ";
         let graphData = await fetch("../graph",{
@@ -40,10 +44,12 @@ submit.addEventListener("click",async (event) => {
         })
         graphData = await graphData.json();
         if(graphData.status){
-          result.innerHTML = "Some implementation is here"
+          console.log(graphData.graph);
+          result.innerHTML = graphData.graph;
         }else{
-          result.innerHTML = "failed please try again probabl some server error";
+          result.innerHTML = "failed please try again probably some server error";
         }
+      }
     }
   }  
 });

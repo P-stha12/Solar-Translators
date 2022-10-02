@@ -7,6 +7,7 @@
     <title>Simulation</title>
     <link rel="icon" href="images/fav.png" type="image/png">
     <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="script.js" type="module" defer></script>
 </head>
 <body>
@@ -38,14 +39,16 @@
                     <span class="label">Value</span>
                     <select id="option">
                         <option value="0">Select a option</option>
-                        <option value="1">Particle Velocity</option>
-                        <option value="2">Magnetic Field</option>
-                        <option value="3">Both of them</option>
+                        <option value="1">Speed</option>
+                        <option value="2">Magnetic field and Speed</option>
                     </select>
                 </label>
             </div>
             <div class="right">
                 <input name="csvInput" type="file" required accept=".csv">
+            </div>
+            <div>
+                NO of hours : <input name="hours" type="text" required id="hours">
             </div>
             <div>
                 <button id="Submit">Submit</button>

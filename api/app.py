@@ -7,6 +7,7 @@ from keras.models import load_model
 import joblib
 import tensorflow as tf
 from flask import send_file
+import base64;
 
 app = Flask(__name__)
 
@@ -41,8 +42,15 @@ def windspeed():
     x_total = np.append(x, forecasts)
     fig = plt.plot(x_total)
     plt.savefig('plot.png')
+    plt.close()
 
-    return send_file('plot.png', mimetype='image/gif')
+    
+    with open("plot.png", "rb") as img_file:
+        b64_bytes = base64.b64encode(img_file.read())
+
+        base64_string = b64_bytes.decode('utf-8')
+
+    return jsonify({'response':base64_string})
     
 
 
@@ -74,7 +82,13 @@ def speedandfield():
     x_total = np.append(speed, predictions)
     fig = plt.plot(x_total)
     plt.savefig('plot.png')
+    plt.close()
 
-    return send_file('plot.png', mimetype='image/gif')
+    with open("plot.png", "rb") as img_file:
+        b64_bytes = base64.b64encode(img_file.read())
+
+        base64_string = b64_bytes.decode('utf-8')
+
+    return jsonify({'response':base64_string})
 
 app.run()
