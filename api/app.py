@@ -38,10 +38,43 @@ def windspeed():
         x_pred = x_pred[1:]
         x_pred = np.append(x_pred, forecast[0])
 
-    x_total = np.append(x, x_pred)
+    x_total = np.append(x, forecasts)
     fig = plt.plot(x_total)
     plt.savefig('plot.png')
 
     return send_file('plot.png', mimetype='image/gif')
     
+
+
+@app.route('/predict-with-speed-and-field', methods=['POST'])
+def speedandfield():
+    scaler = joblib.load('speed_and_field.joblib')
+    model = load_model('speed_and_field.h5')
+    speed_scaler = joblib.load('speed_scaler.joblib')
+    number_steps = request.form['next']
+    csv = request.files.getlist('files[]')[0]
+    data = pd.read_csv(csv)
+    speed = np.array(data['speed'])
+    train_scaled = scaler.transform(data)
+    features = train_scaled
+    feature = np.array(features)
+    feature = feature[np.newaxis,:]
+    predictions = []
+    for i in range(int(number_steps)):
+        prediction = model.predict(feature)
+        next = prediction[0][0]
+        prediction = speed_scaler.inverse_transform(prediction[0][0].reshape(1,-1))
+        predictions.append(prediction[0][0])
+        feature = feature[:,1:]
+        app = np.array([feature[0][22][0], next])
+        app = app.reshape(1,1,2)
+        feature = np.append(feature, app)
+        feature = feature.reshape(1, 24, 2)
+
+    x_total = np.append(speed, predictions)
+    fig = plt.plot(x_total)
+    plt.savefig('plot.png')
+
+    return send_file('plot.png', mimetype='image/gif')
+
 app.run()
