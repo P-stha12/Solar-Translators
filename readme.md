@@ -14,3 +14,4 @@ To run the express server go to the solarFlare directory and run the following c
 npm install 
 npm run dev
 ```
+Project Description: https://2022.spaceappschallenge.org/challenges/2022-challenges/carrington-event/teams/solar-translators/project
